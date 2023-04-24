@@ -28,17 +28,6 @@ class Socket {
             this.ws = io('wss://'+window.location.hostname+':'+window.location.port + window.location.pathname, {transports: ['websocket'], path: '/socket.io', query: {}});
         else if (window.location.protocol == 'http:')
             this.ws = io('ws://'+window.location.hostname+':'+window.location.port + window.location.pathname, {transports: ['websocket'], path: '/socket.io', query: {}});
-
-        // if (window.location.protocol == 'https:')
-        //     this.ws = io('wss://'+window.location.hostname+':'+window.location.port, {transports: ['websocket'], path: '/socket.io', query: {}});
-        // else if (window.location.protocol == 'http:')
-        //     this.ws = io('ws://'+window.location.hostname+':'+window.location.port, {transports: ['websocket'], path: '/socket.io', query: {}});
-
-
-        // const url = window.location.host;
-        // const pathname = window.location.pathname;
-        // this.ws = io.connect(url+pathname);
-
         this.ws.on('connect', () => {
             console.log('connect:', this.ws)
             if (connect_cbk)

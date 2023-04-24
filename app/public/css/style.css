@@ -1,0 +1,31 @@
+#chat-area {width: 100%; min-height: 500px; overflow-y: scroll; background: #848484}
+#message-area {width: 100%;}
+.left {float: left;}
+span.date {color: #1c2030; font-size: smaller; margin-left: 100px;}
+span.user {color: #3bc2a1; font-size: small; margin-right: 20px;}
+#local-video {width: 640px;  height: 480px;}
+div.container {display: flex; align-items: stretch; justify-content: space-between; flex-wrap: wrap-reverse; }
+div.chat-side {flex-basis: 300px; flex-grow: 0; flex-shrink: 0; padding: 20px 30px 0 0px; margin: 10px; display: flex; flex-direction: column;}
+div.videos-side {flex-grow: 1; flex-shrink: 0; flex-basis: auto; padding: 20px 0 0 50px; margin: 10px;}
+ul.users-list {list-style-type: none; color: #3bc2a1; font-size: small; margin-right: 20px;}
+ul.users-list li {color: #3bc2a1; font-size: small; margin-right: 20px;}
+ul.users-list li.me {color: #0b3752; font-size: small; margin-right: 20px;}
+ul.users-list li.me:after {content: ' <-you'; color: darkorange;}
+div.video-container {display: flex; flex-wrap: wrap; flex-direction: column;}
+div.video-container video {margin: 10px; display: inline-block;}
+.border-red {border: 1px solid red;}
+.border-green {border: 1px solid green;}
+.border-gray {border: 1px solid gray;}
+div.controls {margin: 20px;text-align: center;}
+div.controls button {border-radius: 50%; background-color: #00badb; color: white; cursor: pointer; border: none; margin: 0 10px 0 10px; padding: 5px 10px 5px 10px;}
+div.controls button:hover {opacity: 0.5; color: yellow; transition: 0.5s;}
+div.text-input {position: relative;}
+div.send-btn {position: absolute; right: -30px; top: 10px;}
+.control-btn {border-radius: 50%; background-color: #00badb; color: white; cursor: pointer; border: none; margin: 0 10px 0 10px; padding: 5px 10px 5px 10px;}
+.control-btn:hover {opacity: 0.5; color: yellow; transition: 0.5s;}
+button#exit {background-color: #ff253a;}
+.main-container {display: flex; align-items: center; justify-content: space-between; flex-direction: column; height: 100vh;}
+.center {margin: auto;}
+.center input {background-color: #eeeeee; border-radius: 5px; color: inherit; font-size: larger; cursor: pointer;}
+.center input:hover {background-color: #cccccc; transition: 0.5s;}
+.main-container h3 {text-transform: uppercase; font-size: 32px; color: inherit; letter-spacing: 0.5ch;}

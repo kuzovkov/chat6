@@ -1,0 +1,44 @@
+{
+  "name": "chat6",
+  "version": "1.0.0",
+  "description": "node.js chat",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "consolidate": "^0.14.5",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "express": "*",
+    "express-fileupload": "*",
+    "socket.io": "*",
+    "socket.io-client": "^3.1.1",
+    "swig": "^1.4.2",
+    "urlencode": "^1.1.0",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^3.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server_https.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzovkov/chat1.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "kuzovkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kuzovkov/chat1/issues"
+  },
+  "homepage": "https://github.com/kuzovkov/chat1#readme"
+}

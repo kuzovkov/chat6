@@ -10,9 +10,10 @@ RUN addgroup --gid "$group_id" "$user"
 RUN adduser --disabled-password --gecos "" --ingroup "$user" --uid "$user_id" "$user"
 WORKDIR /usr/src/env
 RUN apt-get update && apt-get install net-tools
+RUN npm install --global gulp-cli
 COPY package*.json ./
 RUN npm install
-COPY . .
+COPY . ./app/
 EXPOSE 8000
 RUN chown -R "$user:$user"  /usr/src/env
 RUN chown -R "$user:$user"  /usr/local

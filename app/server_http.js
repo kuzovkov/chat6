@@ -2,24 +2,25 @@
 
 /*сервер*/
 
-var fs = require('fs');
-var express = require('express');
-var app = express();
+const fs = require('fs');
+const express = require('express');
+const app = express();
 
-var cors = require('cors')
+const cors = require('cors')
 
-var fileUpload = require('express-fileupload');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var http = require('http');
-var server = http.createServer(app);
-var io = require('socket.io')(server);
-var port_default = 8000;
-var port = (process.argv.length > 2)? parseInt(process.argv[2]) : port_default;
-var cons = require('consolidate');
-var sockets = {};
+const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server);
+const port_default = 8000;
+const port = (process.argv.length > 2)? parseInt(process.argv[2]) : port_default;
+const cons = require('consolidate');
+const sockets = {};
 const dotenv = require('dotenv');
 dotenv.config({ path: '/usr/src/env/app/.env' });
+const NODE_ENV = process.env.NODE_ENV;
 const ice = require('./ice.json');
 const aliases = {};
 
@@ -46,7 +47,7 @@ app.get('/', function (req, res) {
 })
 app.get('/room/:room', function (req, res) {
     const room = req.params.room;
-    res.render('room', {room: room});
+    res.render('room', {room: room, NODE_ENV: NODE_ENV});
 });
 
 const roomsNsp = io.of(/^\/room\/.*?$/);

@@ -12,10 +12,12 @@ const path = './public';
 gulp.task('scripts', function(cb) {
         pump([
             gulp.src([
-                path + '/vendor/jquery/jquery-1.12.4.js',
-                path + '/vendor/jquery-ui/jquery-ui.min.js',
-                pathJs+'/*.js',
-                path + '/vendor/muaz-khan/DetectRTC.js',
+                pathJs+'/socket.js',
+                pathJs+'/video.js',
+                pathJs+'/media.js',
+                pathJs+'/wrtc.js',
+                pathJs+'/filesp2p.js',
+                pathJs+'/index.js',
             ]),
             gulpif(false, sourcemaps.init()),
             concat('main.js', { newLine: ';' }),

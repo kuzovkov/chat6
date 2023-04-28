@@ -17,18 +17,16 @@
 {% endblock %}
 
 {% block content %}
+<div class="wrapper">
+    <header class="header">
+        <div><label>Your name: </label><input type="text" name="name" id="alias" size="20" class="name"></div>
+    </header>
     <div class="container">
         <div class="chat-side">
-
-            <div><label>Your name: </label><input type="text" name="name" id="alias" size="20"></div>
-
-            <p>
-            <ul class="users-list"></ul>
-            </p>
             <div id="chat-area"></div>
 
             <div class="text-input">
-                <input id="message-area" type="text" class="input">
+                <textarea id="message-area" type="text" class="input" aria-multiline="true"></textarea>
                 <div class="send-btn controls">
                     <button class="btn" id="send"><i class="fa-solid fa-share"></i></button>
                 </div>
@@ -51,4 +49,8 @@
         </div>
 
     </div>
+    <footer class="footer">
+        &copy; Kuzovkov A.V. 2023
+    </footer>
+</div>
 {% endblock %}

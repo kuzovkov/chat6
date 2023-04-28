@@ -20,6 +20,7 @@ class App {
     filesp2p = null;
     p2p_chat = true; //user p2p for chat message
     aliases = {}; //username aliases
+    chatMessages = []; //list chat messages;
 
     constructor(){
         this.sendBtn = document.getElementById('send');
@@ -33,10 +34,10 @@ class App {
         this.videoToggleBtn.addEventListener('click', this.toggleVideo.bind(this));
         this.audioToggleBtn.addEventListener('click', this.toggleAudio.bind(this));
         this.sendFileBtn.addEventListener('click', this.sendFiles.bind(this));
-        this.exitBtn = document.getElementById('exit');
         this.fileInput.addEventListener('change', this.onFilesSelected.bind(this));
         this.messageArea = document.getElementById('message-area');
         this.sendBtn.addEventListener('click', this.sendChatMessage.bind(this));
+        this.exitBtn = document.getElementById('exit');
         this.exitBtn.addEventListener('click', this.exit.bind(this));
         this.aliasInput =  document.getElementById('alias');
         this.aliasInput.value = this.alias;
@@ -72,10 +73,13 @@ class App {
         console.log('devices:', devices);
         this.stream = await this.media.getMediaStream();
         console.log('stream:', this.stream);
+        // for debug
+        for (let i = 0; i < 1; i++)
         if (this.stream){
             this.video = new Video({selector: 'div.video-container'});
             this.video.show();
             this.video.attachStream(this.stream);
+            this.video.setTitle(this.alias);
         }
         this.wrtcConnect(this.stream);
     }
@@ -125,22 +129,26 @@ class App {
         if (this.aliases[alias] !== undefined && this.aliases[alias]){
           alias = this.aliases[alias];
         }
-        this.chatArea.innerHTML += `<span class="user">${alias}</span>: ${data.message} <span class="date">${date}</span><br>`;
+        let chatMessage = {user: alias, message: data.message, date: date};
+        this.chatMessages.push(chatMessage);
+        this.chatArea.innerHTML += `<span class="user">${chatMessage.user}</span>: ${chatMessage.message} <span class="date">${chatMessage.date}</span><br>`;
         this.messageArea.value = '';
+    }
+
+    refreshChatMessages(){
+      for (let i = 0; i < this.chatMessages.length; i++){
+        let socket_id = this.chatMessages[i].user;
+        if (this.aliases[socket_id] !== undefined && aliases[socket_id]){
+          this.chatMessages[i].user = this.aliases[socket_id];
+        }
+      }
+      this.chatArea.innerHTML = this.chatMessages
+        .map(chatMessage => `<span class="user">${chatMessage.user}</span>: ${chatMessage.message} <span class="date">${chatMessage.date}</span>`)
+        .join('<br>');
     }
 
     updateUsersList(data){
         console.log('updateUsersList: ', data);
-        const ul = document.querySelector('ul.users-list');
-        this.destroyChildren(ul);
-        for (let i = 0; i < data.sockets.length; i++){
-            let li = document.createElement('li');
-            li.innerHTML = data.sockets[i];
-            if (data.sockets[i] === this.socket_id){
-                li.classList.add('me');
-            }
-            ul.appendChild(li);
-        }
         this.ice = data.ice
         console.log('ice:', this.ice);
         if (this.wrtc){
@@ -186,8 +194,13 @@ class App {
         this.remoteVideos[username] = new Video({selector: 'div.video-container', id: `video-${username}`, name: username});
         this.remoteVideos[username].show();
         this.remoteVideos[username].attachStream(stream);
+        let alias = username;
+        if (this.aliases[alias] !== undefined && this.aliases[alias]){
+          alias = this.aliases[alias];
+        }
+        this.remoteVideos[username].setTitle(alias);
         this.removeOldVideos();
-    }
+      }
 
     removeOldVideos(){
       for (let username in this.remoteVideos){
@@ -280,27 +293,23 @@ class App {
 
     onChangeAlias(){
       this.alias = this.aliasInput.value;
+      if (this.video){
+        this.video.setTitle(this.alias);
+      }
       this.socket.send('alias', {'alias': this.alias, socket_id: this.socket_id});
     }
 
     onGotAliases(data){
       console.log('onGotAliases:', data);
-      const aliases = data.aliases;
-      this.aliases = aliases;
-      const lis = document.querySelectorAll('ul.users-list li');
-      for (let i = 0; i < lis.length; i++){
-        let socket_id = lis[i].innerHTML;
-        if (aliases[socket_id] !== undefined && aliases[socket_id]){
-          lis[i].innerHTML = aliases[socket_id];
+      this.aliases = data.aliases;
+      for (let username in this.remoteVideos){
+        let alias = username;
+        if (this.aliases[alias] !== undefined && this.aliases[alias]){
+          alias = this.aliases[alias];
         }
+        this.remoteVideos[username].setTitle(alias);
       }
-      const spans = document.querySelectorAll('#chat-area span.user');
-      for (let i = 0; i < spans.length; i++){
-        let socket_id = spans[i].innerHTML;
-        if (aliases[socket_id] !== undefined && aliases[socket_id]){
-          spans[i].innerHTML = aliases[socket_id];
-        }
-      }
+      this.refreshChatMessages();
     }
 
     exit(){

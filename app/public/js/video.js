@@ -3,6 +3,7 @@ class Video {
   params = null;
   parentElement = null;
   video = null;
+  container= null;
 
   constructor(options){
     const default_options = {
@@ -17,6 +18,10 @@ class Video {
     }
     const params = Object.assign({}, default_options, options);
     this.parentElement = document.querySelector(params.selector);
+    this.container = document.createElement('div');
+    this.container.classList.add('video-element-container');
+    this.title = document.createElement('span');
+    this.title.classList.add('video-title');
     this.video = document.createElement('video');
     this.video.width = params.width;
     this.video.height = params.height;
@@ -25,6 +30,8 @@ class Video {
     this.video.controls = params.controls;
     this.video.autoplay = params.autoplay;
     this.video.muted = params.muted;
+    this.container.appendChild(this.title);
+    this.container.appendChild(this.video);
   }
 
   attachStream(stream){
@@ -38,14 +45,24 @@ class Video {
   }
 
   show(){
-    this.parentElement.appendChild(this.video);
+    this.parentElement.appendChild(this.container);
   }
 
   destroy(){
-    if (this.video){
-      this.parentElement.removeChild(this.video);
-      this.video = null
+    if (this.container){
+      this.container.removeChild(this.video);
+      this.parentElement.removeChild(this.container);
+      this.video = null;
+      this.container = null;
     }
+  }
+
+  setTitle(title){
+    this.title.innerHTML = title;
+  }
+
+  getTitle(){
+    return this.title.innerHTML;
   }
 
 }

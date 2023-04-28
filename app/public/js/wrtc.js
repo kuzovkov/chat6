@@ -44,9 +44,6 @@ class WRTC {
      */
     beginConnect(username){
         this.sendMessage({type:'call'}, username);
-        //this.attachStream(document.getElementById("localVideo"), stream);
-        //this.localStream = stream;
-        //console.log(Date.now(), 'gotStream:', stream);
         const ctx = {that: this, username: username}
         this.mash[username] = {}
         this.mash[username].pc = new PeerConnection(this.pc_config);
@@ -92,7 +89,6 @@ class WRTC {
      */
     createOffer(username) {
         console.log(Date.now(), 'createOffer');
-        //document.getElementById("hangupButton").style.display = 'inline-block';
         this.mash[username].pc.createOffer(
           this.gotLocalDescription.bind({that: this, username: username}),
           function(error) { console.log(error) },
@@ -148,13 +144,8 @@ class WRTC {
     gotRemoteStream(event){
         console.log(Date.now(), 'gotRemoteStream: ', event.stream);
         console.log(Date.now(), 'gotRemoteStream(audio tracks): ', event.stream.getAudioTracks());
-        //this.attachStream(document.getElementById("remoteVideo"), event.stream);
         this.that.mash[this.username].online = true;
         this.that.app.onRemoteStream(event.stream, this.username);
-        // this.setHangUp(true);
-        // document.getElementById("screenshareButton").style.display = 'inline-block';
-        // document.getElementById("videoOff").style.display = 'inline-block';
-        // document.getElementById("audioOff").style.display = 'inline-block';
     }
 
     /**
@@ -167,13 +158,8 @@ class WRTC {
         //console.log(Date.now(), 'gotRemoteTracks: ', event);
         console.log(Date.now(), 'gotRemoteTracks: ', event.streams);
         console.log(Date.now(), 'gotRemoteTracks(audio tracks): ', event.streams[0].getAudioTracks());
-        // this.attachStream(document.getElementById("remoteVideo"), event.streams[0]);
         this.that.mash[this.username].online = true;
         this.that.app.onRemoteStream(event.streams[0], this.username);
-        // this.setHangUp(true);
-        // document.getElementById("screenshareButton").style.display = 'inline-block';
-        // document.getElementById("videoOff").style.display = 'inline-block';
-        // document.getElementById("audioOff").style.display = 'inline-block';
     }
 
     /**
@@ -191,7 +177,6 @@ class WRTC {
      * завершение сеанса связи
      */
     disconnect(username){
-        //this.hang_up = true;
         if (this.mash[username] !== undefined && this.mash[username]){
             if (this.mash[username].online){
                 this.mash[username].online = false;
@@ -268,7 +253,6 @@ class WRTC {
     onGettingScreenSteam(stream){
         this.screenStream = this.app.screenStream;
         //this.addStreamStopListener(stream, this.onScreenShareEnded.bind(this));
-        //document.getElementById("screenshareButton").style.display = 'none';
         Object.keys(this.mash).forEach(username => {
           if (username !== this.app.socket_id){
             this.removeStreamFromRTCPeerConnection(this.localStream, username);
@@ -289,7 +273,6 @@ class WRTC {
      */
     onScreenShareEnded(){
         console.log('Screen share stopped');
-        //document.getElementById("screenshareButton").style.display = 'inline-block';
         Object.keys(this.mash).forEach(username => {
           if (username !== this.app.socket_id){
             this.removeStreamFromRTCPeerConnection(this.screenStream, username);
